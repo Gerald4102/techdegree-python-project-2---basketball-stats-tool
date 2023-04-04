@@ -1,6 +1,7 @@
-import constants_copy
+import constants
 import copy
 import random
+
 
 def clean_data(players):
     cleaned_players = []
@@ -31,31 +32,8 @@ def balance_team(players, teams_names):
         else:
             inexperienced_players.append(player)
     
-    experienced_players_per_team = int(len(experienced_players) / len(teams_names))
-    inexperienced_players_per_team = int(len(inexperienced_players) / len(teams_names))
-
     random.shuffle(experienced_players)
     random.shuffle(inexperienced_players)
-
-    # unnamed_teams = []
-    # counter_experienced = 0
-    # counter_inexperienced = 0
-    
-    # for team_name in teams_names:
-    #     new_team = []
-    #     experienced_slice = slice(counter_experienced, experienced_players_per_team + counter_experienced)
-    #     for player in experienced_players[experienced_slice]:
-    #         new_team.append(player)
-    #     counter_experienced += experienced_players_per_team
-
-    #     inexperienced_slice = slice(counter_inexperienced, inexperienced_players_per_team + counter_inexperienced)
-    #     for player in inexperienced_players[inexperienced_slice]:
-    #         new_team.append(player)
-    #     counter_inexperienced += inexperienced_players_per_team
-
-    #     unnamed_teams.append(new_team)
-    # teams = list(zip(teams_names,unnamed_teams))
-
 
     teams = []
     for name in teams_names:
@@ -72,8 +50,9 @@ def balance_team(players, teams_names):
         teams[counter % len(teams)][1].append(player)
         counter += 1
     
-    check(constants_copy.TEAMS, constants_copy.PLAYERS, teams)
+    check(constants.TEAMS, constants.PLAYERS, teams)
     return teams
+
 
 def check(data_teams, data_players, teams):
     num_players_team = int(len(data_players) / len(data_teams))
@@ -88,7 +67,6 @@ def check(data_teams, data_players, teams):
     except Exception as error:
         for error in errors:
             print(error)
-
 
 
 def stats_main_menu():
@@ -110,7 +88,8 @@ Here are your choices:
             exit()
         else:
             continue
-    
+
+
 def stats_team_menu():
 
     team_numb = 1
@@ -125,6 +104,7 @@ def stats_team_menu():
             stats(team_choice - 1)
         else:
             continue
+
 
 def stats(team):
     num_of_players = len(teams[team][1])
@@ -162,19 +142,12 @@ def stats(team):
         if key == '':
             stats_main_menu()
 
+
 if __name__ == "__main__":
-    copied_players = copy.deepcopy(constants_copy.PLAYERS)
+    copied_players = copy.deepcopy(constants.PLAYERS)
     players = clean_data(copied_players)
 
-    copied_teams = copy.deepcopy(constants_copy.TEAMS)
+    copied_teams = copy.deepcopy(constants.TEAMS)
     teams = balance_team(players, copied_teams)
 
-    
-    # for team in teams:
-    #     print(team[0])
-    #     for player in team[1]:
-    #         print(player)
-    #     print()
-
     stats_main_menu()
-
