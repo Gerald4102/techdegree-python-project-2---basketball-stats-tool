@@ -10,11 +10,12 @@ def clean_data(players):
         else:
             player_exp = False       
         height, units = player['height'].split(' ')
+        guardians = player['guardians'].split(' and ')
         cleaned_players.append({
             'name':player['name'], 
-            'guardians':player['guardians'], 
+            'guardians':guardians, 
             'experience':player_exp, 
-            'height': height
+            'height': int(height)
             })
     return cleaned_players
 
@@ -121,22 +122,40 @@ def stats_team_menu():
     while True:
         team_choice = int(input('Enter an option > '))
         if team_choice > 0 and team_choice <= len(teams):
-            stats(team_choice)
+            stats(team_choice - 1)
         else:
             continue
 
 def stats(team):
     num_of_players = len(teams[team][1])
     player_list = []
+    num_experienced = 0
+    num_inexperienced = 0
+    combined_height = 0
+    guardians = []
     for player in teams[team][1]:
         player_list.append(player['name'])
+        if player['experience'] == True:
+            num_experienced += 1
+        else:
+            num_inexperienced += 1
+        combined_height += player['height']
+        for guardian in player['guardians']:
+            guardians.append(guardian)
     players_string = ', '.join(player_list)
+    ave_height = round(combined_height / num_of_players, 1)
+    guardians_string = ', '.join(guardians)
 
-    print(f'Team: {teams[team][0]} Stats')
+
+    print(f'\nTeam: {teams[team][0]} Stats')
     print('--------------------')
     print('Total players:', num_of_players)
-    print('\nPlayers on team:\n ', players_string)
+    print(f'Total experienced: {num_experienced}')
+    print(f'Total inexperienced: {num_inexperienced}')
+    print(f'Average height: {ave_height}')
 
+    print('\nPlayers on team:\n ', players_string)
+    print('\nGuardians:\n ', guardians_string, '\n')
     while True:
         print('Press ENTER to continue...')
         key = input()
