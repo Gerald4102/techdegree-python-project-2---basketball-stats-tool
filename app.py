@@ -87,6 +87,7 @@ Here are your choices:
             print('Bye! \n')
             exit()
         else:
+            print('\nPlease choose one of the options\n')
             continue
 
 
@@ -96,14 +97,23 @@ def stats_team_menu():
     for team in teams:
         print(f'{team_numb}) {team[0]}')
         team_numb += 1
+    largest_numb = team_numb - 1  
     print()
 
     while True:
-        team_choice = int(input('Enter an option > '))
-        if team_choice > 0 and team_choice <= len(teams):
-            stats(team_choice - 1)
-        else:
+        team_choice = input('Enter an option > ')
+        try:
+            team_choice = int(team_choice)
+            if not (team_choice > 0 and team_choice <= len(teams)):
+                raise IndexError('\nThere is no team with that number!\n')
+        except ValueError:
+            print(f'\nPlease choose one of the team numbers... 1 to {largest_numb}\n')
+            continue   
+        except IndexError as err:
+            print(f'{err}')
             continue
+        else:
+            stats(team_choice - 1)
 
 
 def stats(team):
